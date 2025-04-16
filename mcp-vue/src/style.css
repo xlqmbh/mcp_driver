@@ -6,8 +6,55 @@ body {
   background-color: #f8fafc;
   margin: 0;
   min-height: 100vh;
+  transition: background-color 0.3s ease;
+}
+
+.dark body {
+  background-color: #111827;
+  color: #f3f4f6;
 }
 
 .rounded-custom {
   border-radius: 12px;
+}
+
+/* 暗黑模式下的卡片和容器样式 */
+.dark .bg-white {
+  background-color: #1f2937;
+  color: #f3f4f6;
+}
+
+.dark .text-gray-700 {
+  color: #e5e7eb;
+}
+
+.dark .text-gray-600 {
+  color: #d1d5db;
+}
+
+.dark .text-gray-500 {
+  color: #9ca3af;
+}
+
+.dark .border-gray-300 {
+  border-color: #4b5563;
+}
+
+.dark .divide-gray-200 {
+  --tw-divide-opacity: 1;
+  border-color: rgba(75, 85, 99, var(--tw-divide-opacity));
+}
+
+/* 暗黑模式下的输入框样式 */
+.dark input, .dark select, .dark textarea {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+/* 暗黑模式下的过渡效果 */
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }

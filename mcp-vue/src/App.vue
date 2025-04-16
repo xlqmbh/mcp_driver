@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen bg-gray-50">
+  <div class="flex h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
     <!-- 侧边栏 -->
     <SideBar />
 
