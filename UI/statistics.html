@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调用统计 - MCP服务运维平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        success: '#10b981',
+                        danger: '#ef4444',
+                        warning: '#f59e0b',
+                        info: '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc;
+        }
+        .rounded-custom {
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex h-screen bg-gray-50">
+        <!-- 侧边栏 -->
+        <div class="w-64 bg-white shadow-lg rounded-tr-xl rounded-br-xl">
+            <div class="flex items-center justify-center h-16 border-b">
+                <h1 class="text-xl font-bold text-primary">MCP服务运维平台</h1>
+            </div>
+            <nav class="mt-6">
+                <div class="px-4">
+                    <span class="text-xs text-gray-400 uppercase tracking-wider">主菜单</span>
+                    <div class="mt-3">
+                        <a href="index.html" class="flex items-center px-4 py-3 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-lg">
+                            <i class="fas fa-home mr-3"></i>
+                            <span>仪表盘</span>
+                        </a>
+                        <a href="services.html" class="flex items-center px-4 py-3 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-lg mt-1">
+                            <i class="fas fa-server mr-3"></i>
+                            <span>服务管理</span>
+                        </a>
+                        <a href="statistics.html" class="flex items-center px-4 py-3 text-primary bg-blue-50 rounded-lg mt-1">
+                            <i class="fas fa-chart-line mr-3"></i>
+                            <span>调用统计</span>
+                        </a>
+                        <a href="logs.html" class="flex items-center px-4 py-3 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-lg mt-1">
+                            <i class="fas fa-clipboard-list mr-3"></i>
+                            <span>日志查看</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="px-4 mt-8">
+                    <span class="text-xs text-gray-400 uppercase tracking-wider">系统</span>
+                    <div class="mt-3">
+                        <a href="settings.html" class="flex items-center px-4 py-3 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-lg">
+                            <i class="fas fa-cog mr-3"></i>
+                            <span>系统设置</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="flex-1 overflow-auto">
+            <!-- 顶部导航栏 -->
+            <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6">
+                <div class="flex items-center">
+                    <h2 class="text-lg font-medium">调用统计</h2>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-1 rounded-full text-gray-400 hover:text-gray-600 focus:outline-none">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <div class="relative">
+                        <button class="flex items-center text-sm focus:outline-none">
+                            <img class="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="用户头像">
+                            <span class="ml-2 text-gray-700">管理员</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 页面内容 -->
+            <main class="p-6">
+                <!-- 筛选器 -->
+                <div class="bg-white rounded-custom shadow p-6 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div>
+                            <label for="service" class="block text-sm font-medium text-gray-700 mb-1">服务</label>
+                            <select id="service" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="all">所有服务</option>
+                                <option value="text-generation-v1">文本生成服务</option>
+                                <option value="image-recognition-v2">图像识别服务</option>
+                                <option value="speech-synthesis-v1">语音合成服务</option>
+                                <option value="sentiment-analysis-v1">情感分析服务</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="time_range" class="block text-sm font-medium text-gray-700 mb-1">时间范围</label>
+                            <select id="time_range" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="today">今天</option>
+                                <option value="yesterday">昨天</option>
+                                <option value="last_7_days">最近7天</option>
+                                <option value="last_30_days">最近30天</option>
+                                <option value="this_month">本月</option>
+                                <option value="last_month">上月</option>
+                                <option value="custom">自定义</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="group_by" class="block text-sm font-medium text-gray-700 mb-1">分组方式</label>
+                            <select id="group_by" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="hour">按小时</option>
+                                <option value="day">按天</option>
+                                <option value="week">按周</option>
+                                <option value="month">按月</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button class="w-full bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                                应用筛选
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 统计卡片 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-custom shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-100 text-primary">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-gray-500 text-sm">总调用次数</h3>
+                                <p class="text-2xl font-semibold">24,586</p>
+                                <p class="text-sm text-green-600"><i class="fas fa-arrow-up mr-1"></i>12% 较上期</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-custom shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-gray-500 text-sm">成功调用</h3>
+                                <p class="text-2xl font-semibold">23,942</p>
+                                <p class="text-sm text-green-600"><i class="fas fa-arrow-up mr-1"></i>8% 较上期</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-custom shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-red-100 text-red-600">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-gray-500 text-sm">失败调用</h3>
+                                <p class="text-2xl font-semibold">644</p>
+                                <p class="text-sm text-red-600"><i class="fas fa-arrow-up mr-1"></i>3% 较上期</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-custom shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-gray-500 text-sm">平均响应时间</h3>
+                                <p class="text-2xl font-semibold">256ms</p>
+                                <p class="text-sm text-green-600"><i class="fas fa-arrow-down mr-1"></i>5% 较上期</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 图表区域 -->
+                <div class="grid grid-cols-1 gap-6 mb-6">
+                    <div class="bg-white rounded-custom shadow p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-medium">调用趋势</h3>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 text-xs border rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                    按小时
+                                </button>
+                                <button class="px-3 py-1 text-xs border rounded-md text-white bg-primary hover:bg-blue-600">
+                                    按天
+                                </button>
+                                <button class="px-3 py-1 text-xs border rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                    按周
+                                </button>
+                                <button class="px-3 py-1 text-xs border rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                    按月
+                                </button>
+                            </div>
+                        </div>
+                        <div class="h-80 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="调用趋势图" class="max-h-full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white rounded-custom shadow p-6">
+                        <h3 class="text-lg font-medium mb-4">服务调用分布</h3>
+                        <div class="h-64 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="服务调用分布图" class="max-h-full rounded-lg">
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-custom shadow p-6">
+                        <h3 class="text-lg font-medium mb-4">响应时间分布</h3>
+                        <div class="h-64 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="响应时间分布图" class="max-h-full rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 服务调用详情表格 -->
+                <div class="bg-white rounded-custom shadow overflow-hidden">
+                    <div class="px-6 py-4 border-b">
+                        <h3 class="text-lg font-medium">服务调用详情</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">服务名称</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">总调用次数</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">成功次数</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">失败次数</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">成功率</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">平均响应时间</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-500">
+                                                <i class="fas fa-robot"></i>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">文本生成服务</div>
+                                                <div class="text-sm text-gray-500">text-generation-v1</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12,568</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12,245</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">323</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">97.4%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">245ms</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="#" class="text-primary hover:text-blue-700">详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-purple-100 text-purple-500">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">图像识别服务</div>
+                                                <div class="text-sm text-gray-500">image-recognition-v2</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">8,342</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">8,102</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">240</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">97.1%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">312ms</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="#" class="text-primary hover:text-blue-700">详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-500">
+                                                <i class="fas fa-microphone"></i>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">语音合成服务</div>
+                                                <div class="text-sm text-gray-500">speech-synthesis-v1</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="#" class="text-primary hover:text-blue-700">详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-full bg-pink-100 text-pink-500">
+                                                <i class="fas fa-heart"></i>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">情感分析服务</div>
+                                                <div class="text-sm text-gray-500">sentiment-analysis-v1</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3,676</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3,595</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">81</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">97.8%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">178ms</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="#" class="text-primary hover:text-blue-700">详情</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t">
+                        <div class="flex justify-between items-center">
+                            <div class="text-sm text-gray-700">
+                                显示 <span class="font-medium">1</span> 到 <span class="font-medium">4</span> 共 <span class="font-medium">4</span> 条记录
+                            </div>
+                            <div>
+                                <a href="#" class="text-primary hover:text-blue-700 text-sm font-medium">导出数据</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

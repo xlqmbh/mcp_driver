@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统设置 - MCP服务运维平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#64748b',
+                        success: '#10b981',
+                        danger: '#ef4444',
+                        warning: '#f59e0b',
+                        info: '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc;
+        }
+        .rounded-custom {
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex h-screen bg-gray-50">
+        <!-- 侧边栏 -->
+        <div class="w-64 bg-white shadow-lg rounded-tr-xl rounded-br-xl">
+            <div class="flex items-center justify-center h-16 border-b">
+                <h1 class="text-xl font-bold text-primary">MCP服务运维平台</h1>
+            </div>
+            <nav class="mt-6">
+                <div class="px-4">
+                    <span class="text-xs text-gray-400 uppercase tracking-wider">主菜单</span>
+                    <div class="mt-3">
+                        <a href="index.html" class="flex items-center px-4 py-3 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-lg">
+                            <i class="fas fa-home mr-3"></i>
+                            <span>仪表盘</span>
+                        </a>
+                        <a href="services.html" class="flex items-center px-4 py-3 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-lg mt-1">
+                            <i class="fas fa-server mr-3"></i>
+                            <span>服务管理</span>
+                        </a>
+                        <a href="statistics.html" class="flex items-center px-4 py-3 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-lg mt-1">
+                            <i class="fas fa-chart-line mr-3"></i>
+                            <span>调用统计</span>
+                        </a>
+                        <a href="logs.html" class="flex items-center px-4 py-3 text-gray-600 hover:text-primary hover:bg-blue-50 rounded-lg mt-1">
+                            <i class="fas fa-clipboard-list mr-3"></i>
+                            <span>日志查看</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="px-4 mt-8">
+                    <span class="text-xs text-gray-400 uppercase tracking-wider">系统</span>
+                    <div class="mt-3">
+                        <a href="settings.html" class="flex items-center px-4 py-3 text-primary bg-blue-50 rounded-lg">
+                            <i class="fas fa-cog mr-3"></i>
+                            <span>系统设置</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="flex-1 overflow-auto">
+            <!-- 顶部导航栏 -->
+            <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6">
+                <div class="flex items-center">
+                    <h2 class="text-lg font-medium">系统设置</h2>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-1 rounded-full text-gray-400 hover:text-gray-600 focus:outline-none">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <div class="relative">
+                        <button class="flex items-center text-sm focus:outline-none">
+                            <img class="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="用户头像">
+                            <span class="ml-2 text-gray-700">管理员</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 页面内容 -->
+            <main class="p-6">
+                <!-- 设置选项卡 -->
+                <div class="bg-white rounded-custom shadow overflow-hidden">
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex">
+                            <a href="#" class="border-b-2 border-primary text-primary px-6 py-4 text-sm font-medium">基本设置</a>
+                            <a href="#" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 px-6 py-4 text-sm font-medium">安全设置</a>
+                            <a href="#" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 px-6 py-4 text-sm font-medium">通知设置</a>
+                            <a href="#" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 px-6 py-4 text-sm font-medium">备份与恢复</a>
+                            <a href="#" class="border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 px-6 py-4 text-sm font-medium">关于系统</a>
+                        </nav>
+                    </div>
+
+                    <!-- 基本设置内容 -->
+                    <div class="p-6">
+                        <form>
+                            <!-- 系统信息 -->
+                            <div class="mb-8">
+                                <h4 class="text-base font-medium text-gray-700 mb-4">系统信息</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="system_name" class="block text-sm font-medium text-gray-700 mb-1">系统名称</label>
+                                        <input type="text" id="system_name" name="system_name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="MCP服务运维平台">
+                                    </div>
+                                    <div>
+                                        <label for="system_version" class="block text-sm font-medium text-gray-700 mb-1">系统版本</label>
+                                        <input type="text" id="system_version" name="system_version" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-100" value="1.0.0" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 服务配置 -->
+                            <div class="mb-8">
+                                <h4 class="text-base font-medium text-gray-700 mb-4">服务配置</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="service_port" class="block text-sm font-medium text-gray-700 mb-1">管理平台端口</label>
+                                        <input type="number" id="service_port" name="service_port" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="3000">
+                                    </div>
+                                    <div>
+                                        <label for="service_host" class="block text-sm font-medium text-gray-700 mb-1">管理平台主机</label>
+                                        <input type="text" id="service_host" name="service_host" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="0.0.0.0">
+                                    </div>
+                                    <div>
+                                        <label for="data_dir" class="block text-sm font-medium text-gray-700 mb-1">数据存储目录</label>
+                                        <input type="text" id="data_dir" name="data_dir" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="/data/mcp">
+                                    </div>
+                                    <div>
+                                        <label for="log_dir" class="block text-sm font-medium text-gray-700 mb-1">日志存储目录</label>
+                                        <input type="text" id="log_dir" name="log_dir" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="/data/mcp/logs">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 资源限制 -->
+                            <div class="mb-8">
+                                <h4 class="text-base font-medium text-gray-700 mb-4">资源限制</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="max_services" class="block text-sm font-medium text-gray-700 mb-1">最大服务数量</label>
+                                        <input type="number" id="max_services" name="max_services" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="50">
+                                    </div>
+                                    <div>
+                                        <label for="max_log_days" class="block text-sm font-medium text-gray-700 mb-1">日志保留天数</label>
+                                        <input type="number" id="max_log_days" name="max_log_days" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="30">
+                                    </div>
+                                    <div>
+                                        <label for="max_cpu" class="block text-sm font-medium text-gray-700 mb-1">系统CPU限制 (%)</label>
+                                        <input type="number" id="max_cpu" name="max_cpu" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="80">
+                                    </div>
+                                    <div>
+                                        <label for="max_memory" class="block text-sm font-medium text-gray-700 mb-1">系统内存限制 (%)</label>
+                                        <input type="number" id="max_memory" name="max_memory" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="80">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 自动化设置 -->
+                            <div class="mb-8">
+                                <h4 class="text-base font-medium text-gray-700 mb-4">自动化设置</h4>
+                                <div class="space-y-4">
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <input id="auto_start" name="auto_start" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="auto_start" class="font-medium text-gray-700">系统启动时自动启动所有服务</label>
+                                            <p class="text-gray-500">当系统重启后，自动启动所有标记为自动启动的服务</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <input id="auto_restart" name="auto_restart" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="auto_restart" class="font-medium text-gray-700">自动重启异常服务</label>
+                                            <p class="text-gray-500">当服务异常退出时，自动尝试重启服务</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <input id="auto_clean" name="auto_clean" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" checked>
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="auto_clean" class="font-medium text-gray-700">自动清理日志</label>
+                                            <p class="text-gray-500">根据日志保留天数自动清理过期日志</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <input id="auto_backup" name="auto_backup" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label for="auto_backup" class="font-medium text-gray-700">自动备份配置</label>
+                                            <p class="text-gray-500">每天自动备份系统配置和服务配置</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 提交按钮 -->
+                            <div class="flex justify-end space-x-4">
+                                <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    重置
+                                </button>
+                                <button type="submit" class="px-4 py-2 bg-primary hover:bg-blue-600 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                                    保存设置
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 系统状态 -->
+                <div class="mt-6 bg-white rounded-custom shadow overflow-hidden">
+                    <div class="px-6 py-4 border-b">
+                        <h3 class="text-lg font-medium">系统状态</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2">CPU使用率</h4>
+                                <div class="flex items-center">
+                                    <div class="text-2xl font-semibold text-gray-900">32%</div>
+                                    <div class="ml-auto h-8 w-8 flex items-center justify-center rounded-full bg-green-100 text-green-600">
+                                        <i class="fas fa-microchip"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-green-600 h-2.5 rounded-full" style="width: 32%"></div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2">内存使用率</h4>
+                                <div class="flex items-center">
+                                    <div class="text-2xl font-semibold text-gray-900">45%</div>
+                                    <div class="ml-auto h-8 w-8 flex items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                                        <i class="fas fa-memory"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2">磁盘使用率</h4>
+                                <div class="flex items-center">
+                                    <div class="text-2xl font-semibold text-gray-900">68%</div>
+                                    <div class="ml-auto h-8 w-8 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600">
+                                        <i class="fas fa-hdd"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-yellow-600 h-2.5 rounded-full" style="width: 68%"></div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2">系统负载</h4>
+                                <div class="flex items-center">
+                                    <div class="text-2xl font-semibold text-gray-900">1.25</div>
+                                    <div class="ml-auto h-8 w-8 flex items-center justify-center rounded-full bg-purple-100 text-purple-600">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-purple-600 h-2.5 rounded-full" style="width: 25%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">系统信息</h4>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <dl class="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">操作系统</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">Ubuntu 20.04 LTS</dd>
+                                        </div>
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">内核版本</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">5.4.0-91-generic</dd>
+                                        </div>
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">CPU</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">8核 Intel Xeon E5-2680</dd>
+                                        </div>
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">内存</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">32GB DDR4</dd>
+                                        </div>
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">运行时间</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">15天 6小时 32分钟</dd>
+                                        </div>
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">Python版本</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">3.8.10</dd>
+                                        </div>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">服务状态</h4>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <dl class="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">总服务数</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">12</dd>
+                                        </div>
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">运行中服务</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">8</dd>
+                                        </div>
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">停止服务</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">4</dd>
+                                        </div>
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">异常服务</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">0</dd>
+                                        </div>
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">今日调用总数</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">1,286</dd>
+                                        </div>
+                                        <div class="sm:col-span-1">
+                                            <dt class="text-sm font-medium text-gray-500">平均响应时间</dt>
+                                            <dd class="mt-1 text-sm text-gray-900">256ms</dd>
+                                        </div>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
