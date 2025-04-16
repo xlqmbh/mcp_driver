@@ -46,6 +46,11 @@ mcp-vue/
 ├── package.json      # 项目依赖
 └── vite.config.js    # Vite 配置
 ```
+## 项目截图
+![Dashboard](screenshots/dashboard.png)
+![Services](screenshots/services.png)
+![Logs](screenshots/logs.png)
+![Settings](screenshots/settings.png)
 
 ## 安装与使用
 
