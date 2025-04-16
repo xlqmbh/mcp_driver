@@ -49,7 +49,7 @@ mcp-vue/
 ## 项目截图
 ![Dashboard](screenshots/dashboard.png)
 ![Services](screenshots/services.png)
-![Logs](screenshots/logs.png)
+![Logs](screenshots/log.png)
 ![Settings](screenshots/settings.png)
 
 ## 安装与使用
